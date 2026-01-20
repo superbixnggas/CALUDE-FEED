@@ -16,9 +16,9 @@ export default function FeedCard({ feed }: FeedCardProps) {
           <Avatar type={feed.avatar_type} size="sm" />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
             {feed.category && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-600 font-medium">
+              <span className="text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-700 font-medium">
                 {feed.category}
               </span>
             )}
@@ -30,10 +30,10 @@ export default function FeedCard({ feed }: FeedCardProps) {
               })}
             </span>
           </div>
-          <h2 className="text-base font-semibold text-gray-900 group-hover:text-purple-600 transition-colors line-clamp-2 mb-2">
+          <h2 className="text-base font-semibold text-gray-900 group-hover:text-purple-600 transition-colors leading-snug mb-2">
             {feed.title}
           </h2>
-          <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+          <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
             {feed.summary}
           </p>
         </div>

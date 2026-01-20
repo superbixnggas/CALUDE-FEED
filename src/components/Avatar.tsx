@@ -1,47 +1,37 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Lottie from 'lottie-react';
-
-const avatarAnimations: Record<string, string> = {
-  robot: 'https://assets2.lottiefiles.com/packages/lf20_M9p23l.json',
-  ai: 'https://assets5.lottiefiles.com/packages/lf20_oyi9a28g.json',
-  brain: 'https://assets3.lottiefiles.com/packages/lf20_fcfjwiyb.json',
-};
-
 interface AvatarProps {
   type?: string;
   size?: 'sm' | 'md' | 'lg';
 }
 
-export default function Avatar({ type = 'robot', size = 'md' }: AvatarProps) {
-  const [animationData, setAnimationData] = useState<object | null>(null);
+const avatarEmoji: Record<string, string> = {
+  robot: '🤖',
+  ai: '🧠',
+  brain: '💡',
+};
 
+const avatarColors: Record<string, string> = {
+  robot: 'from-purple-500 to-blue-500',
+  ai: 'from-blue-500 to-cyan-500',
+  brain: 'from-amber-500 to-orange-500',
+};
+
+export default function Avatar({ type = 'robot', size = 'md' }: AvatarProps) {
   const sizeClasses = {
-    sm: 'w-12 h-12',
-    md: 'w-16 h-16',
-    lg: 'w-32 h-32',
+    sm: 'w-12 h-12 text-xl',
+    md: 'w-16 h-16 text-2xl',
+    lg: 'w-28 h-28 text-5xl',
   };
 
-  useEffect(() => {
-    const url = avatarAnimations[type] || avatarAnimations.robot;
-    fetch(url)
-      .then((res) => res.json())
-      .then(setAnimationData)
-      .catch(() => setAnimationData(null));
-  }, [type]);
-
-  if (!animationData) {
-    return (
-      <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-purple-500 to-blue-500 animate-pulse flex items-center justify-center`}>
-        <span className="text-white text-xl">🤖</span>
-      </div>
-    );
-  }
+  const emoji = avatarEmoji[type] || avatarEmoji.robot;
+  const colors = avatarColors[type] || avatarColors.robot;
 
   return (
-    <div className={`${sizeClasses[size]} rounded-full overflow-hidden bg-gradient-to-br from-purple-500/20 to-blue-500/20`}>
-      <Lottie animationData={animationData} loop autoplay />
+    <div 
+      className={`${sizeClasses[size]} rounded-full bg-gradient-to-br ${colors} flex items-center justify-center shadow-lg`}
+    >
+      <span className="animate-bounce">{emoji}</span>
     </div>
   );
 }

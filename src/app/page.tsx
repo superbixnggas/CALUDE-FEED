@@ -25,22 +25,23 @@ export const revalidate = 60;
 
 export default async function Home() {
   const feeds = await getFeeds();
+  const displayFeeds = feeds.length > 0 ? feeds : mockFeeds;
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       <Hero />
-      <main className="max-w-2xl mx-auto px-4 py-8">
-        <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-6">
+      <main className="max-w-2xl mx-auto px-4 py-10">
+        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">
           Latest Feeds
         </h2>
         <div className="space-y-4">
-          {feeds.map((feed) => (
+          {displayFeeds.map((feed) => (
             <FeedCard key={feed.id} feed={feed} />
           ))}
         </div>
       </main>
-      <footer className="text-center py-8 text-sm text-gray-400">
+      <footer className="text-center py-10 text-sm text-gray-400 border-t border-gray-100">
         Powered by Claude AI
       </footer>
     </div>
