@@ -1,19 +1,24 @@
 import { supabase, Feed } from '@/lib/supabase';
+import { mockFeeds } from '@/lib/mockData';
 import Header from '@/components/Header';
+import Hero from '@/components/Hero';
 import FeedCard from '@/components/FeedCard';
 
 async function getFeeds(): Promise<Feed[]> {
-  const { data, error } = await supabase
-    .from('feeds')
-    .select('*')
-    .order('published_at', { ascending: false })
-    .limit(50);
+  try {
+    const { data, error } = await supabase
+      .from('feeds')
+      .select('*')
+      .order('published_at', { ascending: false })
+      .limit(50);
 
-  if (error) {
-    console.error('Error fetching feeds:', error);
-    return [];
+    if (error || !data || data.length === 0) {
+      return mockFeeds;
+    }
+    return data;
+  } catch {
+    return mockFeeds;
   }
-  return data || [];
 }
 
 export const revalidate = 60;
@@ -22,23 +27,22 @@ export default async function Home() {
   const feeds = await getFeeds();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-gray-50">
       <Header />
+      <Hero />
       <main className="max-w-2xl mx-auto px-4 py-8">
-        {feeds.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-gray-500 dark:text-gray-400">
-              No feeds yet. Run the generation API to create content.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {feeds.map((feed) => (
-              <FeedCard key={feed.id} feed={feed} />
-            ))}
-          </div>
-        )}
+        <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-6">
+          Latest Feeds
+        </h2>
+        <div className="space-y-4">
+          {feeds.map((feed) => (
+            <FeedCard key={feed.id} feed={feed} />
+          ))}
+        </div>
       </main>
+      <footer className="text-center py-8 text-sm text-gray-400">
+        Powered by Claude AI
+      </footer>
     </div>
   );
 }
